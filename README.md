@@ -8,6 +8,7 @@ go run file_name.go        # run file
 go run project_name        # run entire project
 and go get -u "repo link"  # import module
 go build                   # build exe
+go mod tidy                # Update mod
 ```      
 ## Table of Contents
 1. [Data Types and common variable rules](#01-Data-Types-and-common-variable-rules)
