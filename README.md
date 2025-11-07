@@ -3,12 +3,12 @@
 - Understanding the Workspace: Explanation of go.mod and GOPATH.
 - Basic Commands:
 ```bash
-go mod init project_name
-go run file_name.go
-go run project_name
-and go get -u "repo link"
-go build
-```
+go mod init project_name   # initial a project
+go run file_name.go        # run file
+go run project_name        # run entire project
+and go get -u "repo link"  # import module
+go build                   # build exe
+```      
 ## Table of Contents
 1. [Data Types and common variable rules](#01-Data-Types-and-common-variable-rules)
 2. [Statement](#02-Statement)
