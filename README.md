@@ -6,9 +6,10 @@
 go mod init project_name   # initial a project
 go run file_name.go        # run file
 go run project_name        # run entire project
-and go get -u "repo link"  # import module
+go get -u "repo link"      # import module
+go mod tidy                # Update import mod after placing the module repo in the require section of go.mod
 go build                   # build exe
-go mod tidy                # Update mod
+
 ```      
 ## Table of Contents
 1. [Data Types and common variable rules](#01-Data-Types-and-common-variable-rules)
