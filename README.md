@@ -62,6 +62,10 @@ go build                   # build exe
 	```go
 	var numbers [3]int // numbers will be [0, 0, 0]
 	names := [...]string{"Alice", "Bob", "Charlie"} // Length will be 3
+ 	_ = append(names[:], "samrat")
+    links := []string{} // links is a dynamic slice, starts at length 0
+    // The result of 'append' must be assigned back to the slice variable
+    links = append(links, "http://example.com")
 	```
 - **Map**:
 	- Simple map
