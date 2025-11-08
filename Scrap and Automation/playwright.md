@@ -78,9 +78,9 @@ func main() {
 }
 ```
 ii. asynchronous way with parallel (playwright_examples.md)
-```
-05. limit concurrency ie 3 Tab Async
-04. Fixed ie 3 Tab Async
+```go
+// 05. limit concurrency ie 3 Tab Async
+// 04. Fixed ie 3 Tab Async
 
 
 // Example conceptual snippet for parallel tabs (limit concurrency to 3)
