@@ -57,6 +57,11 @@ go build                   # build exe
     var temperature Celsius = 25.5
     ```
   - Type aliases help improve code readability and enforce type safety.
+
+- **Array**: 
+```go
+names := [...]string{"Alice", "Bob", "Charlie"} // Length will be 3
+```
 - **Map**:
 - Simple map
 ```go
