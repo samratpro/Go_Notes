@@ -200,6 +200,7 @@ func main(){
 		fmt.Println("Neither")
 	}
 }
+// Define a variable in statement never work in global area so, for that case first declear empty variable in global space
 ```
 - Defer
 ```go
