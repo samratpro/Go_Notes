@@ -570,7 +570,164 @@ fmt.Printf("Name: %s, Age: %d\n", name, age)
 - String Formatting (fmt.Sprintf)
 - Regular Expressions
 - String to other types (strconv)
+```go
+package main
 
+import (
+	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
+)
+
+// Helper to print section headers
+func header(title string) {
+	fmt.Printf("\n=== %s ===\n", title)
+}
+
+func main() {
+	// 1. Concatenation and Splitting
+	header("1. Concatenation & Splitting")
+	
+	// Concatenation
+	s1 := "Hello"
+	s2 := "World"
+	concat1 := s1 + " " + s2 + "!"                 // Using +
+	concat2 := fmt.Sprintf("%s %s!", s1, s2)       // Using fmt.Sprintf
+	concat3 := strings.Join([]string{s1, s2, "Go"}, " ") // Using strings.Join
+
+	fmt.Println("Concat +:", concat1)
+	fmt.Println("fmt.Sprintf:", concat2)
+	fmt.Println("strings.Join:", concat3)
+
+	// Splitting
+	sentence := "apple,banana,orange,grape"
+	parts1 := strings.Split(sentence, ",")         // Split by comma
+	parts2 := strings.SplitN(sentence, ",", 2)     // Split into at most 2 parts
+	parts3 := strings.Fields("Go is awesome!")     // Split by whitespace
+
+	fmt.Println("Split:", parts1)
+	fmt.Println("SplitN (2):", parts2)
+	fmt.Println("Fields:", parts3)
+
+	// 2. Trimming, Prefix, Suffix
+	header("2. Trimming, Prefix, Suffix")
+
+	str := "   !!Hello World!!   "
+
+	// Trimming
+	trimmed := strings.TrimSpace(str)                    // Remove leading/trailing whitespace
+	trimmed = strings.Trim(trimmed, "!")                 // Remove '!' from both ends
+	trimmed = strings.TrimLeft(str, " !")                // Left trim
+	trimmed = strings.TrimRight(str, " !")               // Right trim
+	trimmed = strings.TrimPrefix("###GoLang", "###")     // Remove prefix if exists
+	trimmed = strings.TrimSuffix("GoLang@@@", "@@@")     // Remove suffix if exists
+
+	fmt.Println("Original:  '" + str + "'")
+	fmt.Println("TrimSpace: '" + strings.TrimSpace(str) + "'")
+	fmt.Println("Trim '!':  '" + strings.Trim(str, "!") + "'")
+	fmt.Println("TrimPrefix: '" + strings.TrimPrefix("###GoLang", "###") + "'")
+	fmt.Println("TrimSuffix: '" + strings.TrimSuffix("GoLang@@@", "@@@") + "'")
+
+	// Prefix / Suffix checks
+	fmt.Println("HasPrefix 'Go'?:", strings.HasPrefix("GoLang", "Go"))
+	fmt.Println("HasSuffix 'Lang'?:", strings.HasSuffix("GoLang", "Lang"))
+
+	// 3. String Formatting with fmt.Sprintf
+	header("3. String Formatting (fmt.Sprintf)")
+
+	name := "Alice"
+	age := 25
+	price := 99.99
+	active := true
+
+	// Different formatting verbs
+	formatted1 := fmt.Sprintf("Name: %s, Age: %d", name, age)
+	formatted2 := fmt.Sprintf("Price: $%.2f", price)
+	formatted3 := fmt.Sprintf("User: %s is %t (age %d)", name, active, age)
+	formatted4 := fmt.Sprintf("Hex: %x, Binary: %b", 255, 10)
+
+	fmt.Println(formatted1)
+	fmt.Println(formatted2)
+	fmt.Println(formatted3)
+	fmt.Println(formatted4)
+
+	// Padding and alignment
+	fmt.Printf("Left  : '%-10s'|\n", name)   // Left-align, width 10
+	fmt.Printf("Right : '%10s'|\n", name)    // Right-align
+	fmt.Printf("ZeroPad: '%010d'|\n", age)   // Zero-padded number
+
+	// 4. Regular Expressions
+	header("4. Regular Expressions")
+
+	email := "user@example.com"
+	phone := "+1-123-456-7890"
+	text := "Contact: john.doe@email.co or call +1 (555) 123-4567"
+
+	// Email pattern
+	emailRegex := regexp.MustCompile(`[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}`)
+	emails := emailRegex.FindAllString(text, -1)
+	fmt.Println("Emails found:", emails)
+
+	// Phone pattern (simple)
+	phoneRegex := regexp.MustCompile(`\+?\d[\d -]{8,}\d`)
+	phones := phoneRegex.FindAllString(text, -1)
+	fmt.Println("Phones found:", phones)
+
+	// Replace
+	cleaned := emailRegex.ReplaceAllString(text, "[EMAIL]")
+	cleaned = phoneRegex.ReplaceAllString(cleaned, "[PHONE]")
+	fmt.Println("Redacted:", cleaned)
+
+	// Validate
+	isValidEmail := emailRegex.MatchString(email)
+	isValidPhone := regexp.MustCompile(`^\+?\d{1,3}[- ]?\d{3}[- ]?\d{3}[- ]?\d{4}$`).MatchString(phone)
+	fmt.Println("Valid email?", isValidEmail)
+	fmt.Println("Valid phone?", isValidPhone)
+
+	// 5. String to Other Types (strconv)
+	header("5. String to Other Types (strconv)")
+
+	// String to int
+	intStr := "42"
+	num, err := strconv.Atoi(intStr)
+	if err != nil {
+		fmt.Println("Error:", err)
+	} else {
+		fmt.Printf("%s -> int: %d (type: %T)\n", intStr, num, num)
+	}
+
+	// String to int64
+	num64, err := strconv.ParseInt("123456789012345", 10, 64)
+	fmt.Printf("ParseInt: %d\n", num64)
+
+	// String to float
+	floatStr := "3.14159"
+	f, err := strconv.ParseFloat(floatStr, 64)
+	fmt.Printf("%s -> float64: %.5f\n", floatStr, f)
+
+	// String to bool
+	boolStr := "true"
+	b, err := strconv.ParseBool(boolStr)
+	fmt.Printf("%s -> bool: %t\n", boolStr, b)
+
+	// Other types to string
+	backToStr1 := strconv.Itoa(100)
+	backToStr2 := strconv.FormatFloat(2.71828, 'f', 4, 64)
+	backToStr3 := strconv.FormatBool(false)
+
+	fmt.Println("int -> string:", backToStr1)
+	fmt.Println("float -> string:", backToStr2)
+	fmt.Println("bool -> string:", backToStr3)
+
+	// Bonus: Quote and Unquote
+	header("Bonus: Quote & Unquote")
+	quoted := strconv.Quote("She said: \"Hello!\"")
+	fmt.Println("Quoted:", quoted)
+	unquoted, _ := strconv.Unquote(quoted)
+	fmt.Println("Unquoted:", unquoted)
+}
+```
 ### 09. List, Slice, Map, Struct also project base usecase 
 [Return Table of Contents](#Table-of-Contents)
 - List - with all manipulation's methods (loop, append, delete, pop etc )
