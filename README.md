@@ -247,6 +247,10 @@ for i < len(fruits){
 	fmt.Println(fruits[i])
 	i++
 }
+
+for i := 0; i < len(fruits); i++{
+	fmt.Println(fruits[i])
+}
 ```
 - Infinity loop with break
 ```go
