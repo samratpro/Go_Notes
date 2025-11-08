@@ -521,7 +521,7 @@ page.Keyboard().Press("ArrowRight")
 
 ```
 ## 24. Wait
-```
+```go
 // 1. Goto with timeout
 _, err = page.Goto("https://www.linkedin.com/sales/", playwright.PageGotoOptions{
 	Timeout: playwright.Float(60000),
