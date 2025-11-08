@@ -318,6 +318,13 @@ page.Click(`text=Post`) // find by text
 
 ## 12. finding elements
 ```go
+// Helper: safe error handling
+func check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 // Click text
 err = page.Locator(`text='Post'`).Click()
 check(err)
