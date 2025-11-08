@@ -530,7 +530,9 @@ if err != nil {
 	log.Fatal("Goto failed:", err)
 }
 
-// 2. Wait for navigation to complete
+// 2.0 simple wait for load
+page.WaitForLoadState(playwright.PageWaitForLoadStateOptions{State: playwright.LoadStateLoad})
+// 2.1 Wait for navigation to complete
 if err := page.WaitForLoadState(playwright.PageWaitForLoadStateOptions{
 	State:   playwright.LoadStateLoad,
 	Timeout: playwright.Float(30000),
