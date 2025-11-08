@@ -50,6 +50,130 @@ go build                   # build exe
     - `string`: `""`
     - `bool`: `false`
 
+- **Type Aliases**: 
+  - Create custom types or aliases using `type`:
+    ```go
+    type Celsius float64
+    var temperature Celsius = 25.5
+    ```
+  - Type aliases help improve code readability and enforce type safety.
+- **Map**:
+- Simple map
+```go
+func main() {
+    // 1. Define and initialize a simple map
+    populations := make(map[string]int)
+    // 2. Add elements
+    populations["New York"] = 8398748
+    populations["Los Angeles"] = 3990456
+    populations["Chicago"] = 2705994
+    // 3. Access an element
+    fmt.Printf("Population of Los Angeles: %d\n", populations["Los Angeles"])
+    // 4. Update an element
+    populations["Chicago"] = 2705995
+    // 5. Delete an element
+    delete(populations, "New York")
+    // 6. Iterate over the map
+    fmt.Println("\nRemaining Cities:")
+    for city, pop := range populations {
+        fmt.Printf("%s: %d\n", city, pop)
+    }
+}
+```
+- Map with struct
+```go
+// Define the User struct
+type User struct {
+    Email string
+    Active bool
+}
+
+func main() {
+    // Define a map where the key is an integer User ID and the value is a User struct
+    users := make(map[int]User)
+
+    // Add users to the map
+    users[101] = User{Email: "alice@example.com", Active: true}
+    users[102] = User{Email: "bob@example.com", Active: false}
+
+    // Access the struct and its fields
+    fmt.Printf("User 101 Email: %s\n", users[101].Email)
+
+    // To modify a struct *value* within a map, you must copy it out, modify it, and put it back in:
+    user102 := users[102]
+    user102.Active = true
+    users[102] = user102
+    
+    fmt.Printf("User 102 Active Status: %v\n", users[102].Active)
+}
+```
+- map with interface
+```go
+func main() {
+    // Define a map where keys are strings, and values can be anything (interface{})
+    userData := make(map[string]interface{})
+
+    // Add different types of values
+    userData["username"] = "gopher1984"
+    userData["userID"] = 55
+    userData["balance"] = 123.45
+    userData["is_admin"] = false
+
+    fmt.Println(userData)
+
+    // Accessing values requires a type assertion to use them safely:
+    if username, ok := userData["username"].(string); ok {
+        fmt.Printf("Username is a string: %s\n", username)
+    }
+
+    if balance, ok := userData["balance"].(float64); ok {
+        fmt.Printf("Balance is a float: %.2f\n", balance)
+    }
+}
+```
+- **Type Struct**:
+- Simple uses
+```go
+// Represents a 'Book' entity with specific attributes.
+type Book struct {
+    Title    string
+    Author   string
+    Pages    int
+    Isbn     string
+}
+func main() {
+    // Create an instance of the Book struct
+    book1 := Book{
+        Title:  "The Go Programming Language",
+        Author: "Brian Kernighan",
+        Pages:  384,
+        Isbn:   "978-0134190440",
+    }
+    fmt.Printf("Book Title: %s by %s\n", book1.Title, book1.Author)
+}
+```
+- Uses in method
+```go
+type Rectangle struct {
+    Width, Height float64
+}
+
+// Method named 'Area' associated with the Rectangle struct
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+// Method named 'Perimeter' associated with the Rectangle struct
+func (r Rectangle) Perimeter() float64 {
+    return 2 * (r.Width + r.Height)
+}
+
+func main() {
+    rect := Rectangle{Width: 10, Height: 5}
+    fmt.Printf("Rectangle Area: %.2f\n", rect.Area())
+    fmt.Printf("Rectangle Perimeter: %.2f\n", rect.Perimeter())
+}
+```
 - **Type Inference**: 
   - The `:=` operator infers the type from the assigned value:
     ```go
@@ -58,14 +182,7 @@ go build                   # build exe
     z := "Hello" // z is inferred as string
     ```
   - Use `var` when you need to explicitly specify the type.
-
-- **Type Aliases**: 
-  - Create custom types or aliases using `type`:
-    ```go
-    type Celsius float64
-    var temperature Celsius = 25.5
-    ```
-  - Type aliases help improve code readability and enforce type safety.
+  - 
   
 ### 02. Statement
 [Return Table of Contents](#Table-of-Contents)
