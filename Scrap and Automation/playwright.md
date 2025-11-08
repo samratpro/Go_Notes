@@ -318,39 +318,165 @@ page.Click(`text=Post`) // find by text
 
 ## 12. finding elements
 ```py
-# Find By Text
-page.click("text='Post'")  # Post is text of button
-page.locator("text='Element Text Name").fill('my text')
-elements = page.query_selector_all("text='Element Text Name'")
-page.locator(//button[.='Post'])           # if text is exist in child level element of selected element
+// Click text
+	err = page.Locator(`text='Post'`).Click()
+	check(err)
 
-# find by class or id
-page.locator(.class_name)     # single targeted class name
-page.locator(#id_name)        # class name
-page.locator(.class1.class2)  # multiple target class name from many class
+	// Fill text
+	err = page.Locator(`text='Element Text Name'`).Fill("my text")
+	check(err)
 
-# (//element[@identy='name'])[index]
-element = page.locator("//any-path").first.text_content()            # Find first element's content -- suitable for mouse and keyword event
-element = page.query_selector('//any-xpath').text_content()          # Find first path only -- suitable for get content
-elements = page.query_selector_all('//any-xpath')                    # Find all path -- suitable for get All Content
-elements = page.query_selector_all("text='Element Text Name'")        # Find all by text
-for e in elements:
-    print(e.text_content())
+	// Get all elements by text
+	elements, err := page.Locator(`text='Element Text Name'`).All()
+	check(err)
+	for _, el := range elements {
+		text, _ := el.TextContent()
+		fmt.Println("Text:", text)
+	}
 
-elements = page.query_selector_all('//any-xpath')[1]                            # Find second element
-link = page.query_selector('//any-xpath').get_property('href')                  # Get link - img src, title, class, id
-link = page.locator("//any-path").get_attribute('href')
-inner_html = page.query_selector('//any-xpath').inner_html()                    # Get inner HTML of any selected part
-inner_text = page.query_selector('//any-xpath').inner_text()                    # Get inner TEXT of any selected part
+	// XPath with text in child: //button[.='Post']
+	err = page.Locator(`//button[.='Post']`).Click()
+	check(err)
 
-page.get_by_role()                     # locate by explicit and implicit accessibility attributes.
-page.get_by_text()                     # locate by text content.
-page.get_by_label()                    # locate a form control by associated label's text.
-page.get_by_placeholder()              # locate an input by placeholder.
-page.get_by_alt_text()                 # locate an element, usually image, by its text alternative.
-page.get_by_title()                    # locate an element by its title attribute.
-page.get_by_test_id()                  # locate an element based on its data-testid attribute (other attributes can be configured).
-page.get_attribute()                   # argument can be 'href', 'src' etc
+	// ===================================================================
+	// 2. FIND BY CLASS / ID
+	// ===================================================================
+
+	// Single class
+	err = page.Locator(".class_name").Click()
+	check(err)
+
+	// ID
+	err = page.Locator("#id_name").Click()
+	check(err)
+
+	// Multiple classes
+	err = page.Locator(".class1.class2").Click()
+	check(err)
+
+	// XPath with index: (//element[@identy='name'])[2] → second element
+	secondEl := page.Locator(`(//element[@identy='name'])[2]`)
+	text, _ := secondEl.TextContent()
+	fmt.Println("Second element text:", text)
+
+	// ===================================================================
+	// 3. LOCATOR + QUERY SELECTOR
+	// ===================================================================
+
+	// First element text (locator)
+	firstText, _ := page.Locator("//any-path").First().TextContent()
+	fmt.Println("First text:", firstText)
+
+	// First element (query selector)
+	el, err := page.QuerySelector("//any-xpath")
+	check(err)
+	text, _ = el.TextContent()
+	fmt.Println("QuerySelector text:", text)
+
+	// All elements
+	allEls, err := page.QuerySelectorAll("//any-xpath")
+	check(err)
+	for i, e := range allEls {
+		t, _ := e.TextContent()
+		fmt.Printf("Element %d: %s\n", i, t)
+	}
+
+	// All by text
+	textEls, err := page.QuerySelectorAll(`text='Element Text Name'`)
+	check(err)
+	for _, e := range textEls {
+		t, _ := e.TextContent()
+		fmt.Println("Text element:", t)
+	}
+
+	// Second element
+	second, err := page.QuerySelectorAll("//any-xpath")
+	check(err)
+	if len(second) > 1 {
+		t, _ := second[1].TextContent()
+		fmt.Println("Second element:", t)
+	}
+
+	// ===================================================================
+	// 4. GET ATTRIBUTES (href, src, etc.)
+	// ===================================================================
+
+	// Get href via locator
+	href, _ := page.Locator("//any-path").GetAttribute("href")
+	fmt.Println("HREF:", href)
+
+	// Get href via query selector
+	linkEl, err := page.QuerySelector("//any-xpath")
+	check(err)
+	hrefObj, _ := linkEl.Evaluate("el => el.href")
+	fmt.Println("HREF (JS):", hrefObj)
+
+	// Get src, title, class, id
+	src, _ := page.Locator("//img").GetAttribute("src")
+	title, _ := page.Locator("//any").GetAttribute("title")
+	class, _ := page.Locator("//any").GetAttribute("class")
+
+	fmt.Println("SRC:", src, "Title:", title, "Class:", class)
+
+	// ===================================================================
+	// 5. INNER HTML / TEXT
+	// ===================================================================
+
+	innerHTML, _ := page.QuerySelector("//any-xpath").InnerHTML()
+	innerText, _ := page.QuerySelector("//any-xpath").InnerText()
+	fmt.Println("Inner HTML:", innerHTML)
+	fmt.Println("Inner Text:", innerText)
+
+	// ===================================================================
+	// 6. ACCESSIBILITY LOCATORS (get_by_*)
+	// ===================================================================
+
+	// get_by_role
+	err = page.GetByRole("button", playwright.PageGetByRoleOptions{
+		Name: playwright.String("Post"),
+	}).Click()
+	check(err)
+
+	// get_by_text
+	err = page.GetByText("Element Text Name").Fill("new text")
+	check(err)
+
+	// get_by_label
+	err = page.GetByLabel("Username").Fill("john")
+	check(err)
+
+	// get_by_placeholder
+	err = page.GetByPlaceholder("Search...").Fill("query")
+	check(err)
+
+	// get_by_alt_text
+	err = page.GetByAltText("Logo").Click()
+	check(err)
+
+	// get_by_title
+	err = page.GetByTitle("Download").Click()
+	check(err)
+
+	// get_by_test_id
+	err = page.GetByTestId("submit-button").Click()
+	check(err)
+
+	// ===================================================================
+	// 7. WAIT FOR ELEMENTS
+	// ===================================================================
+
+	// Wait for selector
+	_, err = page.WaitForSelector("//button", playwright.PageWaitForSelectorOptions{
+		State:   playwright.WaitForSelectorStateVisible,
+		Timeout: playwright.Float(10000),
+	})
+	check(err)
+
+	// Wait for text
+	_, err = page.WaitForSelector(`text='Ready'`, playwright.PageWaitForSelectorOptions{
+		Timeout: playwright.Float(10000),
+	})
+	check(err)
 # https://playwright.dev/docs/locators 
 ```
 ## 13. Element Behaviour
