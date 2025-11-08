@@ -522,12 +522,39 @@ page.Keyboard().Press("ArrowRight")
 ```
 ## 24. Wait
 ```
-page.Goto("link", playwright.PageGotoOptions{Timeout: playwright.Float(60000)})
-page.WaitForTimeout(5000)
-page.WaitForLoadState("load")
-page.WaitForSelector("path")
-page.WaitForFunction("document.readyState === 'complete'")
-page.WaitForURL("https://www.linkedin.com/sales/*")
+// 1. Goto with timeout
+_, err = page.Goto("https://www.linkedin.com/sales/", playwright.PageGotoOptions{
+	Timeout: playwright.Float(60000),
+})
+if err != nil {
+	log.Fatal("Goto failed:", err)
+}
+
+// 2. Wait for navigation to complete
+if err := page.WaitForLoadState(playwright.PageWaitForLoadStateOptions{
+	State:   playwright.LoadStateLoad,
+	Timeout: playwright.Float(30000),
+}); err != nil {
+	log.Fatal("WaitForLoadState failed:", err)
+}
+
+// 3. Wait for URL pattern
+if err := waitForURL(page, "https://www.linkedin.com/sales/*", 30000); err != nil {
+	log.Fatal(err)
+}
+
+// 4. Wait for selector (e.g., search box)
+if err := waitForSelector(page, "input[aria-label='Search']", 30000); err != nil {
+	log.Fatal(err)
+}
+
+// 5. Wait for JS condition
+if err := waitForFunction(page, "document.readyState === 'complete'", 10000); err != nil {
+	log.Fatal(err)
+}
+
+// 6. Optional: static wait
+page.WaitForTimeout(5000) // 5 seconds
 
 ```
 
