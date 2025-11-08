@@ -22,7 +22,7 @@ Recommended approaches
 -For Windows: C:\path\to\chrome-win\chrome.exe
 -For Linux/Mac point to correct binary.
 ```
-- Error handle
+- Error handle & Page
 ```go
 // Helper: safe error handling
 func check(err error) {
@@ -30,6 +30,8 @@ func check(err error) {
 		log.Fatal(err)
 	}
 }
+
+var page playwright.Page
 ```
 ## 05. Example of initial Code
 i. synchronous way
