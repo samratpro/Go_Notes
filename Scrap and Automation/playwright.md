@@ -317,166 +317,166 @@ page.Click(`text=Post`) // find by text
 ```
 
 ## 12. finding elements
-```py
+```go
 // Click text
-	err = page.Locator(`text='Post'`).Click()
-	check(err)
+err = page.Locator(`text='Post'`).Click()
+check(err)
 
-	// Fill text
-	err = page.Locator(`text='Element Text Name'`).Fill("my text")
-	check(err)
+// Fill text
+err = page.Locator(`text='Element Text Name'`).Fill("my text")
+check(err)
 
-	// Get all elements by text
-	elements, err := page.Locator(`text='Element Text Name'`).All()
-	check(err)
-	for _, el := range elements {
-		text, _ := el.TextContent()
-		fmt.Println("Text:", text)
-	}
+// Get all elements by text
+elements, err := page.Locator(`text='Element Text Name'`).All()
+check(err)
+for _, el := range elements {
+	text, _ := el.TextContent()
+	fmt.Println("Text:", text)
+}
 
-	// XPath with text in child: //button[.='Post']
-	err = page.Locator(`//button[.='Post']`).Click()
-	check(err)
+// XPath with text in child: //button[.='Post']
+err = page.Locator(`//button[.='Post']`).Click()
+check(err)
 
-	// ===================================================================
-	// 2. FIND BY CLASS / ID
-	// ===================================================================
+// ===================================================================
+// 2. FIND BY CLASS / ID
+// ===================================================================
 
-	// Single class
-	err = page.Locator(".class_name").Click()
-	check(err)
+// Single class
+err = page.Locator(".class_name").Click()
+check(err)
 
-	// ID
-	err = page.Locator("#id_name").Click()
-	check(err)
+// ID
+err = page.Locator("#id_name").Click()
+check(err)
 
-	// Multiple classes
-	err = page.Locator(".class1.class2").Click()
-	check(err)
+// Multiple classes
+err = page.Locator(".class1.class2").Click()
+check(err)
 
-	// XPath with index: (//element[@identy='name'])[2] → second element
-	secondEl := page.Locator(`(//element[@identy='name'])[2]`)
-	text, _ := secondEl.TextContent()
-	fmt.Println("Second element text:", text)
+// XPath with index: (//element[@identy='name'])[2] → second element
+secondEl := page.Locator(`(//element[@identy='name'])[2]`)
+text, _ := secondEl.TextContent()
+fmt.Println("Second element text:", text)
 
-	// ===================================================================
-	// 3. LOCATOR + QUERY SELECTOR
-	// ===================================================================
+// ===================================================================
+// 3. LOCATOR + QUERY SELECTOR
+// ===================================================================
 
-	// First element text (locator)
-	firstText, _ := page.Locator("//any-path").First().TextContent()
-	fmt.Println("First text:", firstText)
+// First element text (locator)
+firstText, _ := page.Locator("//any-path").First().TextContent()
+fmt.Println("First text:", firstText)
 
-	// First element (query selector)
-	el, err := page.QuerySelector("//any-xpath")
-	check(err)
-	text, _ = el.TextContent()
-	fmt.Println("QuerySelector text:", text)
+// First element (query selector)
+el, err := page.QuerySelector("//any-xpath")
+check(err)
+text, _ = el.TextContent()
+fmt.Println("QuerySelector text:", text)
 
-	// All elements
-	allEls, err := page.QuerySelectorAll("//any-xpath")
-	check(err)
-	for i, e := range allEls {
-		t, _ := e.TextContent()
-		fmt.Printf("Element %d: %s\n", i, t)
-	}
+// All elements
+allEls, err := page.QuerySelectorAll("//any-xpath")
+check(err)
+for i, e := range allEls {
+	t, _ := e.TextContent()
+	fmt.Printf("Element %d: %s\n", i, t)
+}
 
-	// All by text
-	textEls, err := page.QuerySelectorAll(`text='Element Text Name'`)
-	check(err)
-	for _, e := range textEls {
-		t, _ := e.TextContent()
-		fmt.Println("Text element:", t)
-	}
+// All by text
+textEls, err := page.QuerySelectorAll(`text='Element Text Name'`)
+check(err)
+for _, e := range textEls {
+	t, _ := e.TextContent()
+	fmt.Println("Text element:", t)
+}
 
-	// Second element
-	second, err := page.QuerySelectorAll("//any-xpath")
-	check(err)
-	if len(second) > 1 {
-		t, _ := second[1].TextContent()
-		fmt.Println("Second element:", t)
-	}
+// Second element
+second, err := page.QuerySelectorAll("//any-xpath")
+check(err)
+if len(second) > 1 {
+	t, _ := second[1].TextContent()
+	fmt.Println("Second element:", t)
+}
 
-	// ===================================================================
-	// 4. GET ATTRIBUTES (href, src, etc.)
-	// ===================================================================
+// ===================================================================
+// 4. GET ATTRIBUTES (href, src, etc.)
+// ===================================================================
 
-	// Get href via locator
-	href, _ := page.Locator("//any-path").GetAttribute("href")
-	fmt.Println("HREF:", href)
+// Get href via locator
+href, _ := page.Locator("//any-path").GetAttribute("href")
+fmt.Println("HREF:", href)
 
-	// Get href via query selector
-	linkEl, err := page.QuerySelector("//any-xpath")
-	check(err)
-	hrefObj, _ := linkEl.Evaluate("el => el.href")
-	fmt.Println("HREF (JS):", hrefObj)
+// Get href via query selector
+linkEl, err := page.QuerySelector("//any-xpath")
+check(err)
+hrefObj, _ := linkEl.Evaluate("el => el.href")
+fmt.Println("HREF (JS):", hrefObj)
 
-	// Get src, title, class, id
-	src, _ := page.Locator("//img").GetAttribute("src")
-	title, _ := page.Locator("//any").GetAttribute("title")
-	class, _ := page.Locator("//any").GetAttribute("class")
+// Get src, title, class, id
+src, _ := page.Locator("//img").GetAttribute("src")
+title, _ := page.Locator("//any").GetAttribute("title")
+class, _ := page.Locator("//any").GetAttribute("class")
 
-	fmt.Println("SRC:", src, "Title:", title, "Class:", class)
+fmt.Println("SRC:", src, "Title:", title, "Class:", class)
 
-	// ===================================================================
-	// 5. INNER HTML / TEXT
-	// ===================================================================
+// ===================================================================
+// 5. INNER HTML / TEXT
+// ===================================================================
 
-	innerHTML, _ := page.QuerySelector("//any-xpath").InnerHTML()
-	innerText, _ := page.QuerySelector("//any-xpath").InnerText()
-	fmt.Println("Inner HTML:", innerHTML)
-	fmt.Println("Inner Text:", innerText)
+innerHTML, _ := page.QuerySelector("//any-xpath").InnerHTML()
+innerText, _ := page.QuerySelector("//any-xpath").InnerText()
+fmt.Println("Inner HTML:", innerHTML)
+fmt.Println("Inner Text:", innerText)
 
-	// ===================================================================
-	// 6. ACCESSIBILITY LOCATORS (get_by_*)
-	// ===================================================================
+// ===================================================================
+// 6. ACCESSIBILITY LOCATORS (get_by_*)
+// ===================================================================
 
-	// get_by_role
-	err = page.GetByRole("button", playwright.PageGetByRoleOptions{
-		Name: playwright.String("Post"),
-	}).Click()
-	check(err)
+// get_by_role
+err = page.GetByRole("button", playwright.PageGetByRoleOptions{
+	Name: playwright.String("Post"),
+}).Click()
+check(err)
 
-	// get_by_text
-	err = page.GetByText("Element Text Name").Fill("new text")
-	check(err)
+// get_by_text
+err = page.GetByText("Element Text Name").Fill("new text")
+check(err)
 
-	// get_by_label
-	err = page.GetByLabel("Username").Fill("john")
-	check(err)
+// get_by_label
+err = page.GetByLabel("Username").Fill("john")
+check(err)
 
-	// get_by_placeholder
-	err = page.GetByPlaceholder("Search...").Fill("query")
-	check(err)
+// get_by_placeholder
+err = page.GetByPlaceholder("Search...").Fill("query")
+check(err)
 
-	// get_by_alt_text
-	err = page.GetByAltText("Logo").Click()
-	check(err)
+// get_by_alt_text
+err = page.GetByAltText("Logo").Click()
+check(err)
 
-	// get_by_title
-	err = page.GetByTitle("Download").Click()
-	check(err)
+// get_by_title
+err = page.GetByTitle("Download").Click()
+check(err)
 
-	// get_by_test_id
-	err = page.GetByTestId("submit-button").Click()
-	check(err)
+// get_by_test_id
+err = page.GetByTestId("submit-button").Click()
+check(err)
 
-	// ===================================================================
-	// 7. WAIT FOR ELEMENTS
-	// ===================================================================
+// ===================================================================
+// 7. WAIT FOR ELEMENTS
+// ===================================================================
 
-	// Wait for selector
-	_, err = page.WaitForSelector("//button", playwright.PageWaitForSelectorOptions{
-		State:   playwright.WaitForSelectorStateVisible,
-		Timeout: playwright.Float(10000),
-	})
-	check(err)
+// Wait for selector
+_, err = page.WaitForSelector("//button", playwright.PageWaitForSelectorOptions{
+	State:   playwright.WaitForSelectorStateVisible,
+	Timeout: playwright.Float(10000),
+})
+check(err)
 
-	// Wait for text
-	_, err = page.WaitForSelector(`text='Ready'`, playwright.PageWaitForSelectorOptions{
-		Timeout: playwright.Float(10000),
-	})
-	check(err)
+// Wait for text
+_, err = page.WaitForSelector(`text='Ready'`, playwright.PageWaitForSelectorOptions{
+	Timeout: playwright.Float(10000),
+})
+check(err)
 # https://playwright.dev/docs/locators 
 ```
 ## 13. Element Behaviour
