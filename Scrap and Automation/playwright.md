@@ -14,13 +14,13 @@ https://chromewebstore.google.com/detail/selectorshub/ndgimibanhlabgdgjcpbbndieh
 ## 04. Playwright with Pyinstaller
 ```bash
 Recommended approaches
-Bundle minimal binary with go build — your Go program will call Playwright; browsers must be available on the system (installed via npx playwright install or system Chrome).
-Distribute with browser files — place Playwright browser bundles next to your binary and use ExecutablePath to point to them.
-Use CI to pre-download engines with npx playwright install and ship zipped engines/binary together.
-Example: use PLAYWRIGHT_BROWSERS_PATH-like approach (conceptual)
-If you have downloaded Chromium binary (e.g. from Playwright build or Chrome for Testing), put it under browsers/chrome-win/ and point ExecutablePath to the chrome.exe.
-For Windows: C:\path\to\chrome-win\chrome.exe
-For Linux/Mac point to correct binary.
+-Bundle minimal binary with go build — your Go program will call Playwright; browsers must be available on the system (installed via npx playwright install or system Chrome).
+-Distribute with browser files — place Playwright browser bundles next to your binary and use ExecutablePath to point to them.
+-Use CI to pre-download engines with npx playwright install and ship zipped engines/binary together.
+-Example: use PLAYWRIGHT_BROWSERS_PATH-like approach (conceptual)
+-If you have downloaded Chromium binary (e.g. from Playwright build or Chrome for Testing), put it under browsers/chrome-win/ and point ExecutablePath to the chrome.exe.
+-For Windows: C:\path\to\chrome-win\chrome.exe
+-For Linux/Mac point to correct binary.
 ```
 ## 05. Example of initial Code
 i. synchronous way
